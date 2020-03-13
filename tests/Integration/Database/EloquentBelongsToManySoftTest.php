@@ -2,6 +2,7 @@
 
 namespace DDZobov\PivotSoftDeletes\Tests\Integration\Database\EloquentBelongsToManySoftTest;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -922,6 +923,25 @@ class EloquentBelongsToManySoftTest extends DatabaseTestCase
             Tag::whereIn('id', [$tag->id, $tag3->id])->pluck('name'),
             $post->tags()->withTrashed()->pluck('name')
         );
+    }
+
+    public function testWhereHasMethod()
+    {
+        $post = Post::create(['title' => Str::random()]);
+
+        $tag = Tag::create(['name' => Str::random()]);
+        $tag2 = Tag::create(['name' => Str::random()]);
+        $tag3 = Tag::create(['name' => Str::random()]);
+        $tag4 = Tag::create(['name' => Str::random()]);
+
+        $post->tags()->sync([$tag->id, $tag2->id, $tag3->id, $tag4->id]);
+        $post->tags()->sync([$tag2->id, $tag3->id]);
+
+        $posts = Post::whereHas('tags', function (Builder $builder) use ($tag, $tag4) {
+            $builder->whereIn('tags.id', [$tag->id, $tag4->id]);
+        })->get();
+
+        $this->assertCount(0, $posts);
     }
 }
 
