@@ -47,7 +47,7 @@ class BelongsToManySoft extends BelongsToMany
      */
     public function getQualifiedDeletedAtColumnName()
     {
-        return $this->getQualifiedColumnName($this->pivotDeletedAt);
+        return $this->getQualifiedColumnName($this->deletedAt());
     }
 
     /**

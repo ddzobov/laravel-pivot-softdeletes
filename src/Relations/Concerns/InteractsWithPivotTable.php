@@ -208,7 +208,7 @@ trait InteractsWithPivotTable
     protected function newPivotQueryWithoutTrashed()
     {
         return $this->newPivotQuery()->when($this->withSoftDeletes, function (Builder $query) {
-            $query->whereNull($this->deletedAt());
+            $query->whereNull($this->getQualifiedDeletedAtColumnName());
         });
     }
 }
