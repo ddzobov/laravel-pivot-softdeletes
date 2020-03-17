@@ -1,5 +1,5 @@
 {
-  "name": "alistairreynolds/laravel-pivot-softdeletes",
+  "name": "ddzobov/laravel-pivot-softdeletes",
   "description": "Make your Eloquent models pivots be able to soft deleted in Laravel/Lumen",
   "keywords": ["softdelete", "pivot", "laravel", "lumen"],
   "homepage": "https://github.com/ddzobov/laravel-pivot-softdeletes",
