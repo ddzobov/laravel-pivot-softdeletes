@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @method self withoutTrashed() Show only non-trashed records
- * @method self withTrashed() Show all records
- * @method self onlyTrashed() Show only trashed records
- * @method int forceDetach(\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids, bool  $touch) Show only trashed records
- * @method int syncWithForceDetaching(mixed  $ids) Show only trashed records
+ * @method self withoutTrashedPivots() Show only non-trashed records
+ * @method self withTrashedPivots() Show all records
+ * @method self onlyTrashedPivots() Show only trashed records
+ * @method int forceDetach(\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids, bool  $touch) Force detach records
+ * @method int syncWithForceDetaching(mixed  $ids) Sync many-to-many relationship with force detaching
  */
 class BelongsToManySoft extends BelongsToMany
 {
@@ -67,28 +67,28 @@ class BelongsToManySoft extends BelongsToMany
 
         $this->pivotDeletedAt = $deletedAt;
 
-        $this->macro('withoutTrashed', function () {
-            $this->query->withGlobalScope('withoutTrashed', function (Builder $query) {
+        $this->macro('withoutTrashedPivots', function () {
+            $this->query->withGlobalScope('withoutTrashedPivots', function (Builder $query) {
                 $query->whereNull(
                     $this->getQualifiedDeletedAtColumnName()
                 );
-            })->withoutGlobalScopes(['onlyTrashed']);
+            })->withoutGlobalScopes(['onlyTrashedPivots']);
 
             return $this;
         });
 
-        $this->macro('withTrashed', function () {
-            $this->query->withoutGlobalScopes(['withoutTrashed', 'onlyTrashed']);
+        $this->macro('withTrashedPivots', function () {
+            $this->query->withoutGlobalScopes(['withoutTrashedPivots', 'onlyTrashedPivots']);
 
             return $this;
         });
 
-        $this->macro('onlyTrashed', function () {
-            $this->query->withGlobalScope('onlyTrashed', function (Builder $query) {
+        $this->macro('onlyTrashedPivots', function () {
+            $this->query->withGlobalScope('onlyTrashedPivots', function (Builder $query) {
                 $query->whereNotNull(
                     $this->getQualifiedDeletedAtColumnName()
                 );
-            })->withoutGlobalScopes(['withoutTrashed']);
+            })->withoutGlobalScopes(['withoutTrashedPivots']);
 
             return $this;
         });
@@ -109,7 +109,7 @@ class BelongsToManySoft extends BelongsToMany
             });
         });
 
-        return $this->withPivot($this->deletedAt())->withoutTrashed();
+        return $this->withPivot($this->deletedAt())->withoutTrashedPivots();
     }
 
     /**

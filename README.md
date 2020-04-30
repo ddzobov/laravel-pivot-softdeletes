@@ -1,4 +1,4 @@
-# Laravel pivot SoftDeletes for Laravel 5.8 & 6.x
+# Laravel pivot SoftDeletes for Laravel 5.8 & 6.x & 7.x
 
 ## Installation
 
@@ -69,17 +69,17 @@ $this->belongsToMany(Post::class)->withSoftDeletes('custom_deleted_at');
 $this->belongsToMany(Post::class)->withSoftDeletes();
 
 // same behavior
-$this->belongsToMany(Post::class)->withSoftDeletes()->withoutTrashed();
+$this->belongsToMany(Post::class)->withSoftDeletes()->withoutTrashedPivots();
 ```
 
 ### Show exists & trashed:
 ```php
-$this->belongsToMany(Post::class)->withSoftDeletes()->withTrashed();
+$this->belongsToMany(Post::class)->withSoftDeletes()->withTrashedPivots();
 ```
 
 ### Show only trashed:
 ```php
-$this->belongsToMany(Post::class)->withSoftDeletes()->onlyTrashed();
+$this->belongsToMany(Post::class)->withSoftDeletes()->onlyTrashedPivots();
 ```
 
 ### Restore pivot recods:
