@@ -198,7 +198,8 @@ trait InteractsWithPivotTable
 
             $pivot = $class::fromRawAttributes($this->parent, (array) $record, $this->getTable(), true);
 
-            return $pivot->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey);        });
+            return $pivot->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey);
+        });
     }
 
     /**
