@@ -194,10 +194,11 @@ trait InteractsWithPivotTable
     protected function getCurrentlyAttachedPivots()
     {
         return $this->newPivotQueryWithoutTrashed()->get()->map(function ($record) {
-            $class = $this->using ? $this->using : Pivot::class;
+            $class = $this->using ?: Pivot::class;
 
-            return (new $class)->setRawAttributes((array) $record, true);
-        });
+            $pivot = $class::fromRawAttributes($this->parent, (array) $record, $this->getTable(), true);
+
+            return $pivot->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey);        });
     }
 
     /**
