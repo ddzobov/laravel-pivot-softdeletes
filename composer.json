@@ -1,42 +1,47 @@
 {
-  "name": "ddzobov/laravel-pivot-softdeletes",
-  "description": "Make your Eloquent models pivots be able to soft deleted in Laravel/Lumen",
-  "keywords": ["softdelete", "pivot", "laravel", "lumen"],
-  "homepage": "https://github.com/ddzobov/laravel-pivot-softdeletes",
-  "type": "package",
-  "license": "MIT",
-  "support": {
-    "issues": "https://github.com/ddzobov/laravel-pivot-softdeletes/issues",
-    "source": "https://github.com/ddzobov/laravel-pivot-softdeletes"
-  },
-  "authors": [
-    {
-      "name": "Daniil Zobov",
-      "email": "ddzobov@gmail.com"
-    }
-  ],
-  "require": {
-    "illuminate/database": "^5.8|^6.0|^7.0|^8.0"
-  },
-  "require-dev": {
-    "laravel/framework": "^5.8|^6.0|^7.0|^8.0",
-    "mockery/mockery": "^1.3.1",
-    "orchestra/testbench-core": "^5.0",
-    "phpunit/phpunit": "^8.4|^9.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "DDZobov\\PivotSoftDeletes\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "DDZobov\\PivotSoftDeletes\\Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "test": "vendor/bin/phpunit"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "ddzobov/laravel-pivot-softdeletes",
+    "description": "Make your Eloquent models pivots be able to soft deleted in Laravel/Lumen",
+    "keywords": [
+        "softdelete",
+        "pivot",
+        "laravel",
+        "lumen"
+    ],
+    "homepage": "https://github.com/ddzobov/laravel-pivot-softdeletes",
+    "type": "package",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/ddzobov/laravel-pivot-softdeletes/issues",
+        "source": "https://github.com/ddzobov/laravel-pivot-softdeletes"
+    },
+    "authors": [
+        {
+            "name": "Daniil Zobov",
+            "email": "ddzobov@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^5.8|^6.0|^7.0|^8.0|^9.0"
+    },
+    "require-dev": {
+        "laravel/framework": "^5.8|^6.0|^7.0|^8.0|^9.0",
+        "mockery/mockery": "^1.3.1",
+        "orchestra/testbench-core": "^5.0",
+        "phpunit/phpunit": "^8.4|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DDZobov\\PivotSoftDeletes\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DDZobov\\PivotSoftDeletes\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
