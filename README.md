@@ -1,4 +1,4 @@
-# Laravel pivot SoftDeletes for Laravel 5.8 to 11.x
+# Laravel pivot SoftDeletes for Laravel 5.8 to 12.x
 
 ## Installation
 
