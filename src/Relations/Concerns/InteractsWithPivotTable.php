@@ -72,7 +72,11 @@ trait InteractsWithPivotTable
         if ($this->using && ! empty($ids) && empty($this->pivotWheres) && empty($this->pivotWhereIns)) {
             $results = $this->detachUsingCustomClass($ids);
         } else {
-            $query = $this->newPivotQuery();
+            // Scope to non-trashed rows so a soft-deleting detach never re-stamps an
+            // already-trashed pivot row. newPivotQueryWithoutTrashed() is equivalent to
+            // newPivotQuery() when soft deletes are disabled, so the hard-delete path is
+            // unaffected.
+            $query = $this->newPivotQueryWithoutTrashed();
 
             // If associated IDs were passed to the method we will only delete those
             // associations, otherwise all of the association ties will be broken.
@@ -200,6 +204,36 @@ trait InteractsWithPivotTable
 
             return $pivot->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey);
         });
+    }
+
+    /**
+     * Get the pivot models that are currently attached, filtered by related model keys.
+     *
+     * Overrides the base implementation to scope out trashed rows when soft deletes are
+     * enabled. This is the path used by detach() (via detachUsingCustomClass) and by
+     * updateExistingPivot() for pivots configured with using(). Without this, detaching
+     * a relation that has both a live and a leftover trashed pivot row re-soft-deletes
+     * both to the same deleted_at, colliding on a unique index that includes deleted_at.
+     *
+     * @param  mixed  $ids
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getCurrentlyAttachedPivotsForIds($ids = null)
+    {
+        return $this->newPivotQueryWithoutTrashed()
+            ->when(! is_null($ids), function (Builder $query) use ($ids) {
+                $query->whereIn($this->getQualifiedRelatedPivotKeyName(), $this->parseIds($ids));
+            })
+            ->get()
+            ->map(function ($record) {
+                $class = $this->using ?: Pivot::class;
+
+                $pivot = $class::fromRawAttributes($this->parent, (array) $record, $this->getTable(), true);
+
+                return $pivot
+                    ->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey)
+                    ->setRelatedModel($this->related);
+            });
     }
 
     /**
